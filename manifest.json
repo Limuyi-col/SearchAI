@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "AI Search Plugin",
+  "version": "1.0.0",
+  "description": "search target content used by custom AI",
+  "permissions": ["activeTab", "tabs", "webRequest"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js",
+    "scripts": ["background.js"],
+    "persistent": false
+
+  },
+  "action": {
+    "default_popup": "ai_search.html",
+    "default_icon": "icon.png"
+  }
+}
