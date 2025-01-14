@@ -10,7 +10,7 @@ CORS(app)
 
 
 class SearchAI:
-    def __init__(self, model_pth="/home/lwl/lwl/models/Qwen2.5-7B-Instruct"):
+    def __init__(self, model_pth=None):
         self.model_pth = model_pth
         self.model = None
         self.tokenizer = None
@@ -18,11 +18,11 @@ class SearchAI:
 
     def model_init(self):
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_name,
+            self.model_pth,
             torch_dtype="auto",
             device_map="auto"
         )
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_pth)
 
     def make_prompt(self, query='', searchResults=''):
         system_prompt = f'''
@@ -73,8 +73,7 @@ def generate():
 
 if __name__ == '__main__':
     # 初始化模型
-    # model = pipeline("text-generation", model="/home/lwl/lwl/models/Qwen2.5-7B-Instruct")
-    model_name = "/home/lwl/lwl/models/Qwen2.5-7B-Instruct"
+    model_name = "/path/to/model_name"
     search_ai = SearchAI(model_name)
 
     app.run(host='0.0.0.0', port=5000)
