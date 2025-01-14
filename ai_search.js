@@ -110,22 +110,25 @@ async function processQuery(query) {
                 ---`).join('\n');
 
         // 发送给本地 AI 服务器的完整查询
-        const aiQuery = {
-            query: query,
-            searchResults: searchContext
-        };
+//        const aiQuery = {
+//            query: query,
+//            searchResults: searchContext
+//        };
 
         const aiResponse = await fetch(AI_SERVER_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ query: aiQuery })
+            body: JSON.stringify({
+                query: query,
+                searchResults: searchContext
+            })
         });
 
-        if (!aiResponse.ok) {
-            throw new Error('AI 服务请求失败');
-        }
+//        if (!aiResponse.ok) {
+//            throw new Error('AI 服务请求失败');
+//        }
 
         const data = await aiResponse.json();
 

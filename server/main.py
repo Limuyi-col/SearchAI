@@ -1,3 +1,5 @@
+import traceback
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 # from transformers import pipeline
@@ -50,28 +52,24 @@ class SearchAI:
 
 @app.route('/generate', methods=['POST'])
 def generate():
-    data = request.json
-    query = data.get('query', '')
-
-    if isinstance(query, dict):
-        query = query.get('query', '')
+    try:
+        data = request.json
+        query = data.get('query', '')
         searchContext = data.get('searchResults', '')
 
-        if not searchContext:
-            return jsonify({"result": "搜索结果为空！"}), 400
-    else:
-        searchContext = ''
+        print("query: ", query)
+        print("searchContext: ", searchContext)
 
-    if not query:
-        return jsonify({"result": "输入内容为空！"}), 400
+        if not query:
+            return jsonify({"result": "输入内容为空！"}), 400
 
-    print("query: ", query)
-    print("searchContext: ", searchContext)
-
-    # 使用模型生成结果
-    response = search_ai.generate_response(query, searchContext)
-    # response = generate_response(query)
-    return jsonify({"result": response})
+        # 使用模型生成结果
+        response = search_ai.generate_response(query, searchContext)
+        # response = generate_response(query)
+        return jsonify({"result": response})
+    except Exception as e:
+        print(traceback.format_exc())
+        return jsonify({"result": str(e)}), 500
 
 if __name__ == '__main__':
     # 初始化模型
